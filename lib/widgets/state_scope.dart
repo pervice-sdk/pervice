@@ -112,7 +112,7 @@ class StateScopeElement extends InheritedElement {
     dependent.dependOnInheritedWidgetOfExactType<StateScope>(aspect: id);
 
     // Track the element in either watchers or readers based on the requested [mode].
-    if (mode == StateMode.watch) {
+    if (mode == .watch) {
       subscription.watchers.add(dependent);
     } else {
       subscription.readers.add(dependent);

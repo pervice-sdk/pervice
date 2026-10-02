@@ -102,7 +102,7 @@ void main() {
     expect(service2.isDisposed, isTrue);
   });
 
-  test('ignores a load result after dispose', () async {
+  test('service ignores a load result after dispose', () async {
     final service = TestService();
     final loading = service.load();
     service.dispose();
@@ -136,7 +136,7 @@ void main() {
 
     await tester.pumpWidget(
       Directionality(
-        textDirection: TextDirection.ltr,
+        textDirection: .ltr,
         child: ServiceScope.withState(
           child: Builder(
             builder: (context) {
@@ -158,7 +158,7 @@ void main() {
 
     await tester.pumpWidget(
       Directionality(
-        textDirection: TextDirection.ltr,
+        textDirection: .ltr,
         child: ServiceScope.withState(
           child: Builder(
             builder: (context) {
@@ -178,5 +178,31 @@ void main() {
 
     await tester.pumpAndSettle();
     expect(find.text(service.data), findsOneWidget);
+  });
+
+  testWidgets('serviceOf() with read mode does not rebuild when the service changes', (tester) async {
+    late TestService service;
+    var buildCount = 0;
+
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: .ltr,
+        child: ServiceScope.withState(
+          child: Builder(
+            builder: (context) {
+              buildCount++;
+              service = context.serviceOf(TestService.new, mode: .read);
+              return SizedBox();
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    service.data = 'updated';
+
+    await tester.pump();
+    expect(buildCount, 1);
   });
 }

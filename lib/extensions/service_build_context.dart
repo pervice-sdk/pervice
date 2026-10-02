@@ -15,7 +15,7 @@ extension ServiceBuildContext on BuildContext {
   T serviceOf<T extends Service>(
     T Function() create, {
     Key? key,
-    ServiceMode mode = ServiceMode.watch,
+    ServiceMode mode = .watch,
   }) {
     final element = getElementForInheritedWidgetOfExactType<ServiceScope>();
 
@@ -39,7 +39,7 @@ extension ServiceBuildContext on BuildContext {
   ValueNotifier<T> stateOf<T>(
     T Function() create, {
     Key? key,
-    StateMode mode = StateMode.watch,
+    StateMode mode = .watch,
     Function(T)? onDispose,
   }) {
     final element = getElementForInheritedWidgetOfExactType<StateScope>();
@@ -65,7 +65,7 @@ extension ServiceBuildContext on BuildContext {
   ValueNotifier<T> sharedStateOf<T>(
     T Function() create, {
     required Key key,
-    StateMode mode = StateMode.watch,
+    StateMode mode = .watch,
     Function(T)? onDispose,
   }) {
     final element = getElementForInheritedWidgetOfExactType<StateScope>();

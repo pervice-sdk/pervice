@@ -89,7 +89,7 @@ class ServiceScopeElement extends InheritedElement {
     dependent.dependOnInheritedWidgetOfExactType<ServiceScope>(aspect: id);
 
     // Track the element in either watchers or readers based on the requested [mode].
-    if (mode == ServiceMode.watch) {
+    if (mode == .watch) {
       subscription.watchers.add(dependent);
     } else {
       subscription.readers.add(dependent);

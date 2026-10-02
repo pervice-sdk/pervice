@@ -48,7 +48,7 @@ void main() {
 
     await tester.pumpWidget(
       Directionality(
-        textDirection: TextDirection.ltr,
+        textDirection: .ltr,
         child: ServiceScope.withState(
           child: Builder(
             builder: (context) {
@@ -75,10 +75,10 @@ void main() {
 
     await tester.pumpWidget(
       Directionality(
-        textDirection: TextDirection.ltr,
+        textDirection: .ltr,
         child: ServiceScope.withState(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: .min,
             children: [
               Builder(
                 builder: (context) {
@@ -109,10 +109,10 @@ void main() {
 
     await tester.pumpWidget(
       Directionality(
-        textDirection: TextDirection.ltr,
+        textDirection: .ltr,
         child: ServiceScope.withState(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: .min,
             children: [
               Builder(
                 builder: (context) {
@@ -133,5 +133,93 @@ void main() {
     );
 
     expect(state1, same(state2));
+  });
+
+  testWidgets('state is disposed when element is unmounted', (tester) async {
+    var isDisposed = false;
+
+    await tester.pumpWidget(
+      ServiceScope.withState(
+        child: Builder(
+          builder: (context) {
+            context.stateOf(() => 1, onDispose: (_) => isDisposed = true);
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(ServiceScope.withState(child: const SizedBox()));
+    expect(isDisposed, true);
+  });
+
+  testWidgets('shared state is disposed when element is unmounted', (tester) async {
+    const sharedKey = ValueKey('test');
+    var isDisposed = false;
+
+    Widget build({required bool first, required bool second}) {
+      return ServiceScope.withState(
+        child: Column(
+          mainAxisSize: .min,
+          children: [
+            if (first) ...[
+              Builder(
+                key: const ValueKey('first'),
+                builder: (context) {
+                  context.sharedStateOf(
+                    () => 1,
+                    key: sharedKey,
+                    onDispose: (_) => isDisposed = true,
+                  );
+
+                  return const SizedBox();
+                },
+              ),
+            ],
+
+            if (second) ...[
+              Builder(
+                key: const ValueKey('second'),
+                builder: (context) {
+                  context.sharedStateOf(() => 2, key: sharedKey);
+                  return const SizedBox();
+                },
+              ),
+            ],
+          ],
+        ),
+      );
+    }
+
+    await tester.pumpWidget(build(first: true, second: true));
+    expect(isDisposed, false);
+
+    await tester.pumpWidget(build(first: false, second: true));
+    expect(isDisposed, false);
+
+    await tester.pumpWidget(build(first: false, second: false));
+    expect(isDisposed, true);
+  });
+
+  testWidgets('stateOf() with read mode does not rebuild when the value changes', (tester) async {
+    late ValueNotifier<int> state;
+    var buildCount = 0;
+
+    await tester.pumpWidget(
+      ServiceScope.withState(
+        child: Builder(
+          builder: (context) {
+            buildCount++;
+            state = context.stateOf(() => 1, mode: .read);
+            return SizedBox();
+          },
+        ),
+      ),
+    );
+
+    state.value = 2;
+
+    await tester.pump();
+    expect(buildCount, 1);
   });
 }
