@@ -1,13 +1,13 @@
 <div align="center">
-  <img width="200px" src="https://github.com/flutter-service/service/raw/refs/heads/main/image/logo.png">
-  <h1>Flutter Service</h1>
+  <img width="200px" src="https://github.com/pervice-sdk/pervice/raw/refs/heads/main/image/logo.png">
+  <h1>Pervice</h1>
   <p>
     A Flutter-native MVVM service layer that creates, loads, watches,<br>
     shares, and disposes services according to the widget lifecycle.
   </p>
 </div>
 
-## Why Flutter Service?
+## Why Pervice?
 
 | Feature | Description |
 | ------- | ----------- |
