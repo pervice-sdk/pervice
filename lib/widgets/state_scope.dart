@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:mvvm_service/components/state_id.dart';
-import 'package:mvvm_service/components/state_mode.dart';
-import 'package:mvvm_service/components/state_subscription.dart';
+import 'package:pervice/components/state_id.dart';
+import 'package:pervice/components/state_mode.dart';
+import 'package:pervice/components/state_subscription.dart';
 
 /// A widget that hosts the [StateScopeElement] to manage and
 /// provide application-wide state down the widget subtree.

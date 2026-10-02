@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:mvvm_service/components/service.dart';
+import 'package:pervice/components/service.dart';
 
 /// Manages the connection between a [Service] and the elements depending on it.
 ///

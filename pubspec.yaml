@@ -1,4 +1,4 @@
-name: mvvm_service
+name: pervice
 description: A Flutter-native MVVM service layer that creates, loads, watches, shares, and disposes services according to the widget lifecycle.
 version: 2.4.0
 publisher: ttankkeo112@gmail.com

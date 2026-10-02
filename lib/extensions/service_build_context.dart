@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:mvvm_service/components/service.dart';
-import 'package:mvvm_service/components/service_id.dart';
-import 'package:mvvm_service/components/service_mode.dart';
-import 'package:mvvm_service/components/state_id.dart';
-import 'package:mvvm_service/components/state_mode.dart';
-import 'package:mvvm_service/widgets/service_scope.dart';
-import 'package:mvvm_service/widgets/state_scope.dart';
+import 'package:pervice/components/service.dart';
+import 'package:pervice/components/service_id.dart';
+import 'package:pervice/components/service_mode.dart';
+import 'package:pervice/components/state_id.dart';
+import 'package:pervice/components/state_mode.dart';
+import 'package:pervice/widgets/service_scope.dart';
+import 'package:pervice/widgets/state_scope.dart';
 
 /// Provides convenience methods on [BuildContext] to retrieve,
 /// manage, and react to application-wide services and state.

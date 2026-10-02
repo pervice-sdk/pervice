@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:mvvm_service/mvvm_service.dart';
+import 'package:pervice/pervice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'lib/test_service.dart';

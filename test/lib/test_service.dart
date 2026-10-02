@@ -1,4 +1,4 @@
-import 'package:mvvm_service/mvvm_service.dart';
+import 'package:pervice/pervice.dart';
 
 /// A test implementation of [Service] for String data.
 ///
