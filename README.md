@@ -272,12 +272,30 @@ Every service exposes:
 | `maybeError` | Current error, or `null` when unavailable |
 | `load()` | Loads data and replaces the current state |
 | `refresh()` | Reloads while retaining existing data |
+| `request()` | Makes a one-time request and returns the loaded data |
+| `requestOrNull()` | Makes a one-time request and returns data when available |
 | `notifyUpdated()` | Notifies watching widgets after a custom state change |
 
 You can also assign `data` directly. A changed value automatically notifies watching widgets:
 
 ```dart
 service.data = 42;
+```
+
+### One-time Requests
+
+Use `request()` when a service is only needed to obtain a single result outside
+the widget-managed lifecycle. It automatically disposes the service after the
+request completes:
+
+```dart
+final user = await UserService().request();
+```
+
+Use `requestOrNull()` when an unavailable result should be handled as `null`:
+
+```dart
+final user = await UserService().requestOrNull();
 ```
 
 ## Lifecycle
