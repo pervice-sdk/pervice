@@ -12,11 +12,11 @@ extension ServiceWhen<T> on Service<T> {
     Widget Function(Object error)? failed,
   }) {
     final widget = switch (status) {
-      ServiceStatus.none => (none ?? loading)?.call(),
-      ServiceStatus.loading => loading?.call(),
-      ServiceStatus.refresh => (refresh ?? loaded)?.call(data),
-      ServiceStatus.loaded => loaded?.call(data),
-      ServiceStatus.failed => failed?.call(error),
+      .none => (none ?? loading)?.call(),
+      .loading => loading?.call(),
+      .refresh => (refresh ?? loaded)?.call(data),
+      .loaded => loaded?.call(data),
+      .failed => failed?.call(error),
     };
 
     if (widget == null) {

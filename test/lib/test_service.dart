@@ -9,15 +9,15 @@ class TestService extends Service<String> {
   final bool isThrowError;
   bool isDisposed = false;
 
-  static const Duration duration = Duration(microseconds: 1);
-  static const String sampleData = "Hello, World!";
-  static final Error sampleError = Error();
+  static const duration = Duration(microseconds: 1);
+  static const sampleData = "Hello, World!";
+  static final sampleError = Error();
 
   @override
   Future<String> fetchData() async {
     if (isThrowError) throw sampleError;
 
-    await Future.delayed(Duration(microseconds: 1));
+    await Future.delayed(.new(microseconds: 1));
     return sampleData;
   }
 

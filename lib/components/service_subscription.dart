@@ -23,8 +23,8 @@ class ServiceSubscription {
   /// Elements only reading this service.
   final Set<Element> readers = {};
 
-  /// The total number of dependent elements
-  /// (both readers and watchers) relying on this service.
+  /// The total number of dependent elements (both readers and watchers)
+  /// relying on this service.
   int get referenceCount => watchers.length + readers.length;
 
   /// Unbinds the listener from the service, stopping any future update notifications.

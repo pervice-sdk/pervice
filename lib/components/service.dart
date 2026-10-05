@@ -40,15 +40,15 @@ abstract class Service<T> extends ChangeNotifier {
 
   /// Returns true if the data is currently being loaded or not ready for display.
   /// Typically used to show loading indicators or placeholders.
-  bool get isLoading => status == ServiceStatus.none || status == ServiceStatus.loading;
+  bool get isLoading => status == .none || status == .loading;
 
   /// Returns true if the service is currently refreshing its data.
   /// Useful for pull-to-refresh indicators or temporarily disabling
   /// UI interactions.
-  bool get isRefreshing => status == ServiceStatus.refresh;
+  bool get isRefreshing => status == .refresh;
 
   /// Returns true if the service encountered an error while fetching data.
-  bool get isError => status == ServiceStatus.failed;
+  bool get isError => status == .failed;
 
   /// Determines whether this service should rethrow errors from [load].
   /// Can be overridden by subclasses to customize behavior.
@@ -68,11 +68,11 @@ abstract class Service<T> extends ChangeNotifier {
   /// Throws an assertion error if the data is not yet loaded.
   T get data {
     assert(
-      _data != null || status == ServiceStatus.refresh,
+      _data != null || status == .refresh,
       "Data must be loaded before access.",
     );
     assert(
-      status == ServiceStatus.loaded || status == ServiceStatus.refresh,
+      status == .loaded || status == .refresh,
       "Data should only be accessed when [ServiceStatus.loaded] or refreshing.",
     );
 
@@ -90,11 +90,11 @@ abstract class Service<T> extends ChangeNotifier {
   /// Returns the current error. Throws if no error is present.
   dynamic get error {
     assert(
-      _error != null || status == ServiceStatus.failed,
+      _error != null || status == .failed,
       "Error must exist before access.",
     );
     assert(
-      status == ServiceStatus.failed,
+      status == .failed,
       "Error should only be accessed when [ServiceStatus.failed].",
     );
 
@@ -113,7 +113,7 @@ abstract class Service<T> extends ChangeNotifier {
   void fail(dynamic error) {
     if (_isDisposed) return;
     _error = error;
-    _status = ServiceStatus.failed;
+    _status = .failed;
   }
 
   /// Called when data has been successfully loaded.
@@ -122,18 +122,20 @@ abstract class Service<T> extends ChangeNotifier {
   void done(T newData) {
     if (_isDisposed) return;
     _data = newData;
-    _status = ServiceStatus.loaded;
+    _status = .loaded;
   }
 
   /// Starts loading or refreshing the data managed by this service.
   ///
   /// Sets the service status to [ServiceStatus.loading] or [ServiceStatus.refresh]
   /// depending on the [isRefresh] flag. The actual data fetching is performed
-  /// by [fetchData]. This method must call either [done] on success or [fail]
+  /// by [fetchData].
+  ///
+  /// This method must call either [done] on success or [fail]
   /// on failure to properly update the service state and notify listeners.
   @mustCallSuper
   Future<void> load({bool isRefresh = false}) async {
-    _status = isRefresh ? ServiceStatus.refresh : ServiceStatus.loading;
+    _status = isRefresh ? .refresh : .loading;
 
     try {
       done(await fetchData());
@@ -158,6 +160,24 @@ abstract class Service<T> extends ChangeNotifier {
 
   /// Requests a refresh while keeping existing data until new data is loaded.
   Future<void> refresh() async => await load(isRefresh: true);
+
+  /// A convenience API for one-time data requests that require a result.
+  ///
+  /// Use [requestOrNull] when a missing result should be handled as `null`.
+  Future<T> request() async {
+    await load();
+    dispose();
+    return data;
+  }
+
+  /// A convenience API for one-time data requests with an optional result.
+  ///
+  /// Use [request] when a result is required.
+  Future<T?> requestOrNull() async {
+    await load();
+    dispose();
+    return maybeData;
+  }
 
   /// Notifies listeners that the internal data has been updated.
   void notifyUpdated() => notifyListeners();
