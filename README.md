@@ -356,7 +356,7 @@ A service accessed by an element remains associated with that element until it i
 
 ## Error Handling
 
-Errors thrown by `fetchData()` are stored in the service state and rethrown by default:
+Errors thrown by `fetchData()` are stored in the service state without being rethrown by default:
 
 ```dart
 class UserService extends Service<User> {
@@ -370,11 +370,23 @@ On failure:
 - `status` becomes `ServiceStatus.failed`.
 - `hasError` becomes `true`.
 - The exception is available through `error` and `maybeError`.
-- The exception is rethrown to the caller. Handle it with `try`/`catch` when awaiting `load()`, `refresh()`, or `request()`. `requestOrNull()` catches loading errors and returns `null` instead.
+- `load()` and `refresh()` complete without rethrowing the exception by default.
 
-Override `canRethrow` to handle failures through the service state without rethrowing:
+Override `canRethrow` to propagate loading errors to the caller and handle them with `try`/`catch`:
 
 ```dart
 @override
-bool get canRethrow => false;
+bool get canRethrow => true;
+```
+
+For custom error logging or reporting, override `fail()` and call `super.fail(error)` to preserve the error state:
+
+```dart
+@override
+void fail(dynamic error) {
+  super.fail(error);
+
+  // Log or report the error.
+  debugPrint('Failed to load $runtimeType: $error');
+}
 ```

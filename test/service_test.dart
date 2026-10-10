@@ -36,7 +36,7 @@ void main() {
 
       expect(service.status, ServiceStatus.loading);
 
-      await future.onError((_, _) => {});
+      await future;
 
       expect(service.status, ServiceStatus.failed);
       expect(service.maybeData, isNull);

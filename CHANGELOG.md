@@ -28,3 +28,7 @@
 
 - Added `BuildContext.setState()` to request a rebuild of the current widget or the nearest ancestor of a specified widget type, with an optional callback.
 - Added `BuildContext.onInitState()` and `BuildContext.onDispose()` for one-time initialization and cleanup callbacks tied to the calling widget lifecycle.
+
+## 1.3.1
+
+- Restored `Service.canRethrow` to `false` by default.

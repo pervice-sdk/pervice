@@ -49,7 +49,7 @@ abstract class Service<T> extends ChangeNotifier {
 
   /// Determines whether this service should rethrow errors from [load].
   /// Can be overridden by subclasses to customize behavior.
-  bool get canRethrow => true;
+  bool get canRethrow => false;
 
   T? _data;
   dynamic _error;
