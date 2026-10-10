@@ -82,7 +82,7 @@ class ExampleSubtreeWidget extends StatelessWidget {
     final service = context.serviceOf(ExampleService.new);
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       spacing: 15,
       children: [
         Opacity(

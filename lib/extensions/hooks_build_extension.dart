@@ -56,14 +56,14 @@ extension HooksBuildExtension on BuildContext {
     int initialIndex = 0,
     Duration? animationDuration,
     required int length,
-    required TickerProvider vsync,
+    TickerProvider? vsync,
   }) {
     final state = stateOf(
       () => TabController(
         initialIndex: initialIndex,
         animationDuration: animationDuration,
         length: length,
-        vsync: vsync,
+        vsync: vsync ?? useTickerProvider(),
       ),
       onDispose: (e) => e.dispose(),
     );
@@ -122,8 +122,8 @@ extension HooksBuildExtension on BuildContext {
     String? debugLabel,
     double lowerBound = 0.0,
     double upperBound = 1.0,
-    AnimationBehavior animationBehavior = AnimationBehavior.normal,
-    required TickerProvider vsync,
+    AnimationBehavior animationBehavior = .normal,
+    TickerProvider? vsync,
   }) {
     final state = stateOf(
       () => AnimationController(
@@ -134,7 +134,7 @@ extension HooksBuildExtension on BuildContext {
         lowerBound: lowerBound,
         upperBound: upperBound,
         animationBehavior: animationBehavior,
-        vsync: vsync,
+        vsync: vsync ?? useTickerProvider(),
       ),
       onDispose: (e) => e.dispose(),
     );

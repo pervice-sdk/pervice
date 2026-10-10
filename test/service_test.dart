@@ -31,12 +31,12 @@ void main() {
   test(
     "load() should change status to failed when fetchData throws an error",
     () async {
-      final service = TestService(isThrowError: true);
+      final service = TestService(throwError: true);
       final future = service.load();
 
       expect(service.status, ServiceStatus.loading);
 
-      await future;
+      await future.onError((_, _) => {});
 
       expect(service.status, ServiceStatus.failed);
       expect(service.maybeData, isNull);

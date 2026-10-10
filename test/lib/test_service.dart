@@ -4,9 +4,9 @@ import 'package:pervice/pervice.dart';
 ///
 /// Can simulate success or failure based on [isThrowError].
 class TestService extends Service<String> {
-  TestService({this.isThrowError = false});
+  TestService({this.throwError = false});
 
-  final bool isThrowError;
+  final bool throwError;
   bool isDisposed = false;
 
   static const duration = Duration(microseconds: 1);
@@ -15,7 +15,7 @@ class TestService extends Service<String> {
 
   @override
   Future<String> fetchData() async {
-    if (isThrowError) throw sampleError;
+    if (throwError) throw sampleError;
 
     await Future.delayed(.new(microseconds: 1));
     return sampleData;

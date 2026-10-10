@@ -23,7 +23,7 @@ enum ServiceStatus {
 abstract class Service<T> extends ChangeNotifier {
   Service({ServiceStatus initialStatus = ServiceStatus.none}) {
     _statusNotifier = ValueNotifier(initialStatus);
-    _statusNotifier.addListener(notifyListeners);
+    _statusNotifier.addListener(notifyChanged);
   }
 
   /// An internal [Listenable] instance that defines
@@ -52,15 +52,12 @@ abstract class Service<T> extends ChangeNotifier {
 
   /// Determines whether this service should rethrow errors from [load].
   /// Can be overridden by subclasses to customize behavior.
-  bool get canRethrow => false;
-
-  /// Determines whether this service should log errors using debugPrint.
-  /// Subclasses can override to disable or customize logging.
-  bool get canDebugPrint => true;
+  bool get canRethrow => true;
 
   T? _data;
   dynamic _error;
 
+  /// Whether this service has been disposed, preventing updates from pending requests.
   bool _isDisposed = false;
 
   /// Returns the currently deserialized and loaded data.
@@ -83,7 +80,7 @@ abstract class Service<T> extends ChangeNotifier {
   set data(T newData) {
     if (_data != newData) {
       _data = newData;
-      notifyUpdated();
+      notifyChanged();
     }
   }
 
@@ -142,12 +139,8 @@ abstract class Service<T> extends ChangeNotifier {
     } catch (error) {
       fail(error);
 
-      // Controls error handling: rethrows if [canRethrow], otherwise logs the failure.
-      if (canRethrow) {
-        rethrow;
-      } else if (canDebugPrint) {
-        debugPrint("Service $this failed to load: $error");
-      }
+      // Rethrows the error if [canRethrow] is enabled.
+      if (canRethrow) rethrow;
     }
   }
 
@@ -179,8 +172,8 @@ abstract class Service<T> extends ChangeNotifier {
     return maybeData;
   }
 
-  /// Notifies listeners that the internal data has been updated.
-  void notifyUpdated() => notifyListeners();
+  /// Notifies listeners that the service state has changed.
+  void notifyChanged() => notifyListeners();
 
   @override
   void dispose() {

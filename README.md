@@ -74,7 +74,7 @@ class CounterView extends StatelessWidget {
     }
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         Opacity(
           opacity: service.isRefreshing ? 0.5 : 1,
