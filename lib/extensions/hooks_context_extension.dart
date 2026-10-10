@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pervice/components/hook_ticker_provider.dart';
-import 'package:pervice/extensions/service_build_context.dart';
+import 'package:pervice/extensions/service_context_extension.dart';
 
 /// Provides a suite of custom hooks via [BuildContext] to manage the lifecycle
 /// of common Flutter controllers and resource-heavy objects automatically.
-extension HooksBuildExtension on BuildContext {
+extension HooksBuildContext on BuildContext {
   /// Creates and automatically disposes a [ScrollController].
   ScrollController useScrollController({
     double initialScrollOffset = 0.0,
@@ -184,5 +184,51 @@ extension HooksBuildExtension on BuildContext {
     );
 
     return state.value;
+  }
+
+  /// Runs [callback] and marks a widget for rebuilding.
+  ///
+  /// Rebuilds the current widget when [T] is omitted or is [Widget].
+  /// Otherwise, rebuilds the nearest ancestor whose widget is of type [T].
+  void setState<T extends Widget>([VoidCallback? callback]) {
+    callback?.call();
+
+    // Marks the current element for rebuilding.
+    if (T == Widget) {
+      (this as Element).markNeedsBuild();
+      return;
+    }
+
+    // Marks the nearest ancestor of type T for rebuilding.
+    visitAncestorElements((element) {
+      if (element.widget is T) {
+        element.markNeedsBuild();
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  /// Runs [callback] once when first registered by this widget.
+  void onInitState(VoidCallback callback) {
+    stateOf(
+      () {
+        callback();
+        return null;
+      },
+      key: const ValueKey(#onInitState),
+      mode: .read,
+    );
+  }
+
+  /// Runs the initially registered [callback] when this widget is removed.
+  void onDispose(VoidCallback callback) {
+    stateOf<VoidCallback>(
+      () => callback,
+      key: const ValueKey(#onDispose),
+      mode: .read,
+      onDispose: (callback) => callback(),
+    );
   }
 }

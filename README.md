@@ -235,6 +235,38 @@ final animation = context.useAnimationController(
 
 Call hooks during `build` and keep calls in a stable, unconditional order so they retain the correct instances across rebuilds.
 
+### Lifecycle Callbacks
+
+Use `onInitState()` and `onDispose()` during `build` for lifecycle callbacks similar to Flutter's `State.initState()` and `State.dispose()`:
+
+```dart
+context.onInitState(() {
+  // Initialize once on the first build.
+});
+
+context.onDispose(() {
+  // Clean up when the widget is removed.
+});
+```
+
+Initialization runs once, and cleanup runs when the widget is removed. Requires `StateScope` or `ServiceScope.withState`.
+
+### Easy Rebuilds
+
+Use `context.setState()` to rebuild the widget associated with that context. The optional synchronous callback runs before the rebuild is requested:
+
+```dart
+context.setState(() => count++);
+```
+
+Specify a widget type to rebuild the nearest matching ancestor instead:
+
+```dart
+context.setState<SignUpPage>();
+```
+
+Omitting the type, or explicitly using `Widget`, targets the current widget. If no matching ancestor exists, no rebuild is requested. This method does not require a `ServiceScope` or `StateScope`, and does not store or share state. Call it from event handlers using an active context, rather than during `build`.
+
 ## Declarative State Handling
 
 The `when` extension maps every `ServiceStatus` to a widget:
@@ -338,7 +370,7 @@ On failure:
 - `status` becomes `ServiceStatus.failed`.
 - `hasError` becomes `true`.
 - The exception is available through `error` and `maybeError`.
-- The exception is rethrown to the caller. Handle it with `try`/`catch` when awaiting `load()`, `refresh()`, or request methods.
+- The exception is rethrown to the caller. Handle it with `try`/`catch` when awaiting `load()`, `refresh()`, or `request()`. `requestOrNull()` catches loading errors and returns `null` instead.
 
 Override `canRethrow` to handle failures through the service state without rethrowing:
 

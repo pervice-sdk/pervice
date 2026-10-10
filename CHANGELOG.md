@@ -23,3 +23,8 @@
 - Corrected the README's error handling documentation to reflect rethrowing errors by default and the removal of automatic error logging.
 - Changed `Service.requestOrNull()` to return `null` instead of rethrowing loading errors.
 - Updated `useTickerProvider()` to reuse a single ticker provider within the same widget, including animation hooks that omit `vsync`.
+
+## 1.3.0
+
+- Added `BuildContext.setState()` to request a rebuild of the current widget or the nearest ancestor of a specified widget type, with an optional callback.
+- Added `BuildContext.onInitState()` and `BuildContext.onDispose()` for one-time initialization and cleanup callbacks tied to the calling widget lifecycle.

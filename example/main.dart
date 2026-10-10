@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ServiceScope(
+      home: ServiceScope.withState(
         child: Scaffold(
           body: SafeArea(child: Center(child: ExampleWidget())),
         ),
@@ -44,6 +44,16 @@ class ExampleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final service = context.serviceOf(ExampleService.new);
+
+    // Called once when this widget is first built.
+    context.onInitState(() {
+      debugPrint('ExampleWidget initialized');
+    });
+
+    // Called when this widget is removed from the tree.
+    context.onDispose(() {
+      debugPrint('ExampleWidget disposed');
+    });
 
     // Alternatively, you can use the `when` extension on the service
     // to declaratively build widgets based on its current state.

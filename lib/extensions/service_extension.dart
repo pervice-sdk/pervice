@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pervice/components/service.dart';
 
 /// Extension that provides a Flutter widget builder for [Service] states.
-extension ServiceWhen<T> on Service<T> {
+extension ServiceExtension<T> on Service<T> {
   /// Returns a widget depending on the current [ServiceStatus].
   Widget when({
     Widget Function()? none,
