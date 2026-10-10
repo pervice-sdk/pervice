@@ -67,7 +67,7 @@ abstract class Service<T> extends ChangeNotifier {
     );
     assert(
       status == .loaded || status == .refresh,
-      "Data should only be accessed when [ServiceStatus.loaded] or refreshing.",
+      "Data should only be accessed when ServiceStatus.loaded or refreshing.",
     );
 
     return _data!;
@@ -89,7 +89,7 @@ abstract class Service<T> extends ChangeNotifier {
     );
     assert(
       status == .failed,
-      "Error should only be accessed when [ServiceStatus.failed].",
+      "Error should only be accessed when ServiceStatus.failed.",
     );
 
     return _error!;
@@ -153,29 +153,39 @@ abstract class Service<T> extends ChangeNotifier {
 
   /// Loads and returns [data] for a one-time request.
   ///
-  /// Propagates errors thrown by [load] or the [data] getter.
-  /// Always disposes the service, whether the request succeeds or fails.
+  /// Unlike calling [fetchData] directly, manages loading, success,
+  /// and failure states and automatically disposes the service
+  /// when the request completes.
+  ///
+  /// Errors are propagated regardless of [canRethrow].
+  /// Use with a fresh service in [ServiceStatus.none].
+  /// do not reuse it afterward.
   Future<T> request() async {
+    assert(
+      status == .none,
+      'Service.request() requires an unused service with ServiceStatus.none.',
+    );
+
     try {
-      await load();
+      _status = .loading;
+      done(await fetchData());
       return data;
+    } catch (error) {
+      fail(error);
+      rethrow;
     } finally {
       dispose();
     }
   }
 
-  /// Loads and returns [maybeData], or `null` if [load] throws.
+  /// Returns the result of [request], or `null` if it throws.
   ///
-  /// If [canRethrow] is disabled, a failed load may return existing data.
-  /// Always disposes the service, whether the request succeeds or fails.
+  /// Disposal is handled by [request], whether it succeeds or fails.
   Future<T?> requestOrNull() async {
     try {
-      await load();
-      return maybeData;
+      return await request();
     } catch (_) {
       return null;
-    } finally {
-      dispose();
     }
   }
 

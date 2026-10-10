@@ -32,3 +32,9 @@
 ## 1.3.1
 
 - Restored `Service.canRethrow` to `false` by default.
+
+## 1.3.2
+
+- Changed `Service.request()` to call `fetchData()` directly instead of `load()` and propagate errors regardless of `canRethrow`.
+- Added an assertion that `Service.request()` starts with `ServiceStatus.none` for one-time use.
+- Changed `Service.requestOrNull()` to delegate to `request()` and return `null` on failure instead of returning existing data.
