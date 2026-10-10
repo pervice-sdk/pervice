@@ -21,22 +21,19 @@ enum ServiceStatus {
 /// An abstract class that represents the ViewModel in the `MVVM` architecture pattern.
 /// Primarily responsible for data loading and state management.
 abstract class Service<T> extends ChangeNotifier {
-  Service({ServiceStatus initialStatus = ServiceStatus.none}) {
-    _statusNotifier = ValueNotifier(initialStatus);
-    _statusNotifier.addListener(notifyChanged);
-  }
+  Service({ServiceStatus initialStatus = .none}) : _rawStatus = initialStatus;
 
-  /// An internal [Listenable] instance that defines
-  /// the current state and notifies listeners for rebuilds.
-  late final ValueNotifier<ServiceStatus> _statusNotifier;
+  /// Stores the current service status.
+  late ServiceStatus _rawStatus;
 
   /// Internally updates the current state with the given value.
   set _status(ServiceStatus newStatus) {
-    _statusNotifier.value = newStatus;
+    _rawStatus = newStatus;
+    notifyChanged();
   }
 
   /// Returns the current status of the [Service].
-  ServiceStatus get status => _statusNotifier.value;
+  ServiceStatus get status => _rawStatus;
 
   /// Returns true if the data is currently being loaded or not ready for display.
   /// Typically used to show loading indicators or placeholders.
@@ -48,7 +45,7 @@ abstract class Service<T> extends ChangeNotifier {
   bool get isRefreshing => status == .refresh;
 
   /// Returns true if the service encountered an error while fetching data.
-  bool get isError => status == .failed;
+  bool get hasError => status == .failed;
 
   /// Determines whether this service should rethrow errors from [load].
   /// Can be overridden by subclasses to customize behavior.
@@ -154,22 +151,32 @@ abstract class Service<T> extends ChangeNotifier {
   /// Requests a refresh while keeping existing data until new data is loaded.
   Future<void> refresh() async => await load(isRefresh: true);
 
-  /// A convenience API for one-time data requests that require a result.
+  /// Loads and returns [data] for a one-time request.
   ///
-  /// Use [requestOrNull] when a missing result should be handled as `null`.
+  /// Propagates errors thrown by [load] or the [data] getter.
+  /// Always disposes the service, whether the request succeeds or fails.
   Future<T> request() async {
-    await load();
-    dispose();
-    return data;
+    try {
+      await load();
+      return data;
+    } finally {
+      dispose();
+    }
   }
 
-  /// A convenience API for one-time data requests with an optional result.
+  /// Loads and returns [maybeData], or `null` if [load] throws.
   ///
-  /// Use [request] when a result is required.
+  /// If [canRethrow] is disabled, a failed load may return existing data.
+  /// Always disposes the service, whether the request succeeds or fails.
   Future<T?> requestOrNull() async {
-    await load();
-    dispose();
-    return maybeData;
+    try {
+      await load();
+      return maybeData;
+    } catch (_) {
+      return null;
+    } finally {
+      dispose();
+    }
   }
 
   /// Notifies listeners that the service state has changed.
@@ -178,7 +185,6 @@ abstract class Service<T> extends ChangeNotifier {
   @override
   void dispose() {
     _isDisposed = true;
-    _statusNotifier.dispose();
     super.dispose();
   }
 

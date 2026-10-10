@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pervice/pervice.dart';
 
 /// A simple example service that extends [Service] with integer data.
-/// It increments a static counter each time [fetchData] is called.
+/// It increments a counter each time [fetchData] is called.
 class ExampleService extends Service<int> {
   int count = 0;
 
   // Simulates fetching data asynchronously with a 1-second delay.
   @override
   Future<int> fetchData() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(.new(seconds: 1));
     return count += 1;
   }
 }
@@ -64,7 +64,7 @@ class ExampleWidget extends StatelessWidget {
       return CircularProgressIndicator();
     }
 
-    if (service.isError) {
+    if (service.hasError) {
       return Text("Service is failed: ${service.error}");
     }
 

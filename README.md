@@ -69,7 +69,7 @@ class CounterView extends StatelessWidget {
       return const CircularProgressIndicator();
     }
 
-    if (service.isError) {
+    if (service.hasError) {
       return Text('Failed: ${service.error}');
     }
 
@@ -223,13 +223,13 @@ Available hooks:
 | `useStreamController<T>()` | `StreamController<T>` |
 | `useStreamControllerBroadcast<T>()` | `StreamController<T>.broadcast` |
 
-Hooks that animate require a ticker provider:
+Animation hooks automatically reuse the same ticker provider within the calling widget when `vsync` is omitted:
 
 ```dart
-final vsync = context.useVsync();
+// Controllers in the same widget automatically share a ticker provider.
+// Pass vsync explicitly only when you need a different provider.
 final animation = context.useAnimationController(
-  vsync: vsync,
-  duration: const Duration(milliseconds: 300),
+  duration: const .new(milliseconds: 300),
 );
 ```
 
@@ -265,7 +265,7 @@ Every service exposes:
 | `status` | Current `ServiceStatus` |
 | `isLoading` | `true` while idle or loading |
 | `isRefreshing` | `true` during a refresh |
-| `isError` | `true` after a failed load |
+| `hasError` | `true` after a failed load |
 | `data` | Loaded data; intended for loaded or refreshing states |
 | `maybeData` | Current data, or `null` when unavailable |
 | `error` | Current error in the failed state |
@@ -274,7 +274,7 @@ Every service exposes:
 | `refresh()` | Reloads while retaining existing data |
 | `request()` | Makes a one-time request and returns the loaded data |
 | `requestOrNull()` | Makes a one-time request and returns data when available |
-| `notifyUpdated()` | Notifies watching widgets after a custom state change |
+| `notifyChanged()` | Notifies watching widgets after a custom state change |
 
 You can also assign `data` directly. A changed value automatically notifies watching widgets:
 
@@ -324,7 +324,7 @@ A service accessed by an element remains associated with that element until it i
 
 ## Error Handling
 
-Errors thrown by `fetchData()` are captured automatically:
+Errors thrown by `fetchData()` are stored in the service state and rethrown by default:
 
 ```dart
 class UserService extends Service<User> {
@@ -336,16 +336,13 @@ class UserService extends Service<User> {
 On failure:
 
 - `status` becomes `ServiceStatus.failed`.
-- `isError` becomes `true`.
+- `hasError` becomes `true`.
 - The exception is available through `error` and `maybeError`.
-- The error is printed with `debugPrint` by default.
+- The exception is rethrown to the caller. Handle it with `try`/`catch` when awaiting `load()`, `refresh()`, or request methods.
 
-Override these properties to customize error behavior:
+Override `canRethrow` to handle failures through the service state without rethrowing:
 
 ```dart
 @override
-bool get canRethrow => true;
-
-@override
-bool get canDebugPrint => false;
+bool get canRethrow => false;
 ```

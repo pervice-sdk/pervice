@@ -15,3 +15,11 @@
 - **Breaking:** Renamed `Service.notifyUpdated()` to `Service.notifyChanged()`.
 - **Breaking:** Removed `Service.canDebugPrint` and automatic error logging.
 - Made `vsync` optional in `useTabController()` and `useAnimationController()`, using `useTickerProvider()` when omitted.
+
+## 1.2.0+1
+
+- **Breaking:** Renamed `Service.isError` to `Service.hasError`.
+- Updated the README and example to use the current service API.
+- Corrected the README's error handling documentation to reflect rethrowing errors by default and the removal of automatic error logging.
+- Changed `Service.requestOrNull()` to return `null` instead of rethrowing loading errors.
+- Updated `useTickerProvider()` to reuse a single ticker provider within the same widget, including animation hooks that omit `vsync`.

@@ -107,7 +107,11 @@ extension HooksBuildExtension on BuildContext {
 
   /// Creates and automatically disposes a [TickerProvider].
   TickerProvider useTickerProvider() {
-    final state = stateOf(HookTickerProvider.new, onDispose: (e) => e.dispose());
+    final state = stateOf(
+      HookTickerProvider.new,
+      key: ValueKey(HookTickerProvider),
+      onDispose: (e) => e.dispose(),
+    );
     return state.value;
   }
 
