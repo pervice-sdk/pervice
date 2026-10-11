@@ -62,15 +62,11 @@ abstract class Service<T> extends ChangeNotifier {
   /// Throws an assertion error if the data is not yet loaded.
   T get data {
     assert(
-      _data != null || status == .refresh,
-      "Data must be loaded before access.",
-    );
-    assert(
       status == .loaded || status == .refresh,
       "Data should only be accessed when ServiceStatus.loaded or refreshing.",
     );
 
-    return _data!;
+    return _data as T;
   }
 
   /// Updates the currently loaded data with the given value.

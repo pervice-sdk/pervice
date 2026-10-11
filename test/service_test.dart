@@ -205,4 +205,18 @@ void main() {
     await tester.pump();
     expect(buildCount, 1);
   });
+
+  test("load() supports void data", () async {
+    final service = TestVoidService();
+    addTearDown(service.dispose);
+
+    await service.load();
+
+    expect(service.status, ServiceStatus.loaded);
+    expect(() => service.data, returnsNormally);
+  });
+
+  test("request() completes for void data", () async {
+    await expectLater(TestVoidService().request(), completes);
+  });
 }

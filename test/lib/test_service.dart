@@ -28,6 +28,14 @@ class TestService extends Service<String> {
   }
 }
 
+/// A distinct [TestService] type for testing service lookup and lifecycle.
 class TestService1 extends TestService {}
 
+/// Another [TestService] type for testing services independently of [TestService1].
 class TestService2 extends TestService {}
+
+/// A test implementation of [Service] that completes without returning data.
+class TestVoidService extends Service<void> {
+  @override
+  Future<void> fetchData() async {}
+}
