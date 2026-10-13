@@ -142,9 +142,18 @@ class StateScopeElement extends InheritedElement {
           subscription.watchers.remove(dependent);
           subscription.readers.remove(dependent);
 
-          // Dispose of the state if it is no longer referenced by any widget.
+          // Allow dependents to reattach before disposing an unused state.
           if (subscription.referenceCount == 0) {
-            _subscriptions.remove(id)?.dispose();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final isRegistered = identical(_subscriptions[id], subscription);
+              final isUnused = subscription.referenceCount == 0;
+
+              // Preserve subscriptions reused during reparenting and avoid disposing
+              // subscriptions already removed or replaced before this callback runs.
+              if (isRegistered && isUnused) {
+                _subscriptions.remove(id)?.dispose();
+              }
+            });
           }
         }
       }

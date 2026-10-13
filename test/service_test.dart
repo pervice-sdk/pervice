@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:pervice/pervice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -204,6 +204,76 @@ void main() {
 
     await tester.pump();
     expect(buildCount, 1);
+  });
+
+  testWidgets('service survives reparenting within the same frame', (tester) async {
+    late TestService service;
+
+    final child = Builder(
+      key: GlobalKey(),
+      builder: (context) {
+        service = context.serviceOf(TestService.new);
+        return const SizedBox();
+      },
+    );
+
+    // Load the service and change its data before moving the widget.
+    await tester.pumpWidget(
+      ServiceScope(
+        child: Padding(padding: .zero, child: child),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    final original = service;
+    original.data = 'updated';
+
+    // Reparent the same element without removing it permanently.
+    await tester.pumpWidget(ServiceScope(child: Align(child: child)));
+    await tester.pumpAndSettle();
+
+    // The existing service and its data should remain available.
+    expect(original.isDisposed, isFalse);
+    expect(service, same(original));
+    expect(service.data, 'updated');
+  });
+
+  testWidgets('service survives pushing and popping a route', (tester) async {
+    late BuildContext homeContext;
+    late TestService service;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return ServiceScope(child: child!);
+        },
+        home: Builder(
+          builder: (context) {
+            homeContext = context;
+            service = context.serviceOf(TestService.new);
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    final original = service;
+    original.data = 'updated';
+
+    // Cover the home route with a detail route, then return to it.
+    Navigator.of(homeContext).push<void>(MaterialPageRoute(builder: (_) => const SizedBox()));
+    await tester.pumpAndSettle();
+
+    Navigator.of(homeContext).pop();
+    await tester.pumpAndSettle();
+
+    // Returning to the home route should retain the service and its data.
+    expect(original.isDisposed, isFalse);
+    expect(service, same(original));
+    expect(service.data, 'updated');
   });
 
   test("load() supports void data", () async {

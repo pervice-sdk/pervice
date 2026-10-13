@@ -42,3 +42,7 @@
 ## 1.3.3
 
 - Fixed `Service.data` to support `void` and nullable data types without throwing on successful loads or requests.
+
+## 1.3.4
+
+- Fixed services and states being disposed during widget reparenting by deferring cleanup until the end of the frame and checking for remaining dependents.

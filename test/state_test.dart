@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:pervice/pervice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -199,6 +199,162 @@ void main() {
 
     await tester.pumpWidget(build(first: false, second: false));
     expect(isDisposed, true);
+  });
+
+  testWidgets('stateOf() survives reparenting within the same frame', (tester) async {
+    late ValueNotifier<int> state;
+    var disposeCount = 0;
+
+    final child = Builder(
+      key: GlobalKey(),
+      builder: (context) {
+        state = context.stateOf(() => 1, onDispose: (_) => disposeCount++);
+        return const SizedBox();
+      },
+    );
+
+    // Change the state before moving the widget.
+    await tester.pumpWidget(
+      StateScope(
+        child: Padding(padding: .zero, child: child),
+      ),
+    );
+
+    final original = state;
+    original.value = 2;
+
+    // Reparent the same element and retain its state.
+    await tester.pumpWidget(StateScope(child: Align(child: child)));
+    expect(disposeCount, 0);
+    expect(state, same(original));
+    expect(state.value, 2);
+
+    // Dispose exactly once when the widget is permanently removed.
+    await tester.pumpWidget(const StateScope(child: SizedBox()));
+    expect(disposeCount, 1);
+
+    await tester.pumpWidget(const SizedBox());
+    expect(disposeCount, 1);
+  });
+
+  testWidgets('sharedStateOf() survives reparenting within the same frame', (tester) async {
+    late ValueNotifier<int> state;
+    var disposeCount = 0;
+
+    final child = Builder(
+      key: GlobalKey(),
+      builder: (context) {
+        state = context.sharedStateOf(
+          () => 1,
+          key: const ValueKey('shared'),
+          onDispose: (_) => disposeCount++,
+        );
+        return const SizedBox();
+      },
+    );
+
+    // Change the shared state before moving the widget.
+    await tester.pumpWidget(
+      StateScope(
+        child: Padding(padding: .zero, child: child),
+      ),
+    );
+
+    final original = state;
+    original.value = 2;
+
+    // Reparent the same element and retain its shared state.
+    await tester.pumpWidget(StateScope(child: Align(child: child)));
+    expect(disposeCount, 0);
+    expect(state, same(original));
+    expect(state.value, 2);
+
+    // Dispose exactly once when the last dependent is permanently removed.
+    await tester.pumpWidget(const StateScope(child: SizedBox()));
+    expect(disposeCount, 1);
+
+    await tester.pumpWidget(const SizedBox());
+    expect(disposeCount, 1);
+  });
+
+  testWidgets('stateOf() survives pushing and popping a route', (tester) async {
+    late BuildContext homeContext;
+    late ValueNotifier<int> state;
+    var disposeCount = 0;
+
+    // Create the home state and change its value.
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) => StateScope(child: child!),
+        home: Builder(
+          builder: (context) {
+            homeContext = context;
+            state = context.stateOf(
+              () => 1,
+              key: const ValueKey('state'),
+              onDispose: (_) => disposeCount++,
+            );
+
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    final original = state;
+    original.value = 2;
+
+    // Cover the home route with a detail route, then return to it.
+    Navigator.of(homeContext).push<void>(MaterialPageRoute(builder: (_) => const SizedBox()));
+    await tester.pumpAndSettle();
+
+    Navigator.of(homeContext).pop();
+    await tester.pumpAndSettle();
+
+    // The home state should retain its instance and value without disposal.
+    expect(disposeCount, 0);
+    expect(state, same(original));
+    expect(state.value, 2);
+  });
+
+  testWidgets('sharedStateOf() survives pushing and popping a route', (tester) async {
+    late BuildContext homeContext;
+    late ValueNotifier<int> state;
+    var disposeCount = 0;
+
+    // Create the shared home state and change its value.
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) => StateScope(child: child!),
+        home: Builder(
+          builder: (context) {
+            homeContext = context;
+            state = context.sharedStateOf(
+              () => 1,
+              key: const ValueKey('shared'),
+              onDispose: (_) => disposeCount++,
+            );
+
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    final original = state;
+    original.value = 2;
+
+    // Cover the home route with a detail route, then return to it.
+    Navigator.of(homeContext).push<void>(MaterialPageRoute(builder: (_) => const SizedBox()));
+    await tester.pumpAndSettle();
+
+    Navigator.of(homeContext).pop();
+    await tester.pumpAndSettle();
+
+    // The shared state should retain its instance and value without disposal.
+    expect(disposeCount, 0);
+    expect(state, same(original));
+    expect(state.value, 2);
   });
 
   testWidgets('stateOf() with read mode does not rebuild when the value changes', (tester) async {
