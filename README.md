@@ -1,11 +1,8 @@
-<div align="center">
-  <img width="200px" src="https://github.com/pervice-sdk/pervice/raw/refs/heads/main/image/logo.png">
-  <h1>Pervice</h1>
-  <p>
-    A Flutter-native MVVM service layer that creates, loads, watches,<br>
-    shares, and disposes services according to the widget lifecycle.
-  </p>
-</div>
+<img width="2171px" height="724" src="https://github.com/pervice-sdk/pervice/raw/refs/heads/main/image/banner.png">
+
+## Introduction
+
+A Flutter-native MVVM service layer that creates, loads, watches, shares, and disposes services according to the widget lifecycle.
 
 ## Why Pervice?
 
