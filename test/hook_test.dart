@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:pervice/pervice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'lib/test_notifier.dart';
+
 void main() {
   testWidgets("setState() rebuilds only the current widget", (tester) async {
     late BuildContext testContext;
@@ -122,5 +124,42 @@ void main() {
 
     await tester.pumpWidget(const StateScope(child: SizedBox()));
     expect(callCount, 1);
+  });
+
+  testWidgets("watch() rebuilds on changes and removes its listener on disposal", (tester) async {
+    final notifier = TestNotifier();
+    addTearDown(notifier.dispose);
+
+    var buildCount = 0;
+
+    await tester.pumpWidget(
+      StateScope(
+        child: Builder(
+          builder: (context) {
+            context.watch(notifier);
+            buildCount++;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    expect(buildCount, 1);
+    expect(notifier.isListening, isTrue);
+
+    // Verify that a notification rebuilds the widget.
+    notifier.value++;
+    await tester.pump();
+    expect(buildCount, 2);
+
+    // Verify that removing the widget unregisters its listener.
+    await tester.pumpWidget(const StateScope(child: SizedBox()));
+    expect(notifier.isListening, isFalse);
+
+    // Verify that subsequent notifications do not rebuild the removed widget.
+    notifier.value++;
+
+    await tester.pump();
+    expect(buildCount, 2);
   });
 }

@@ -46,3 +46,7 @@
 ## 1.3.4
 
 - Fixed services and states being disposed during widget reparenting by deferring cleanup until the end of the frame and checking for remaining dependents.
+
+## 1.3.5
+
+- Added `BuildContext.watch(Listenable)` to rebuild the calling widget on notifications and automatically remove the listener when the widget is disposed.
