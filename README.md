@@ -26,7 +26,7 @@ class CounterService extends Service<int> {
 
   @override
   Future<int> fetchData() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future.delayed(const .new(seconds: 1));
     return ++count;
   }
 }
@@ -231,6 +231,14 @@ final animation = context.useAnimationController(
 ```
 
 Call hooks during `build` and keep calls in a stable, unconditional order so they retain the correct instances across rebuilds.
+
+Use `context.watch()` during `build` to rebuild the widget when an existing `Listenable` notifies:
+
+```dart
+context.watch(notifier);
+```
+
+The listener is removed automatically when the widget is disposed. The notifier itself is not disposed.
 
 ### Lifecycle Callbacks
 

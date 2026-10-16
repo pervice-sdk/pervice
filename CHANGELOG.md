@@ -50,3 +50,7 @@
 ## 1.3.5
 
 - Added `BuildContext.watch(Listenable)` to rebuild the calling widget on notifications and automatically remove the listener when the widget is disposed.
+
+## 1.3.6
+
+- Added `ValueNotifierListExtension` with `add()`, `addAll()`, `remove()`, `removeAt()`, and `clear()` to simplify list state management and notify listeners on changes.

@@ -6,7 +6,7 @@ import 'package:pervice/extensions/service_context_extension.dart';
 
 /// Provides a suite of custom hooks via [BuildContext] to manage the lifecycle
 /// of common Flutter controllers and resource-heavy objects automatically.
-extension HooksBuildContext on BuildContext {
+extension HooksContextExtension on BuildContext {
   /// Creates and automatically disposes a [ScrollController].
   ScrollController useScrollController({
     double initialScrollOffset = 0.0,

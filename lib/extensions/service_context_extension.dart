@@ -9,7 +9,7 @@ import 'package:pervice/widgets/state_scope.dart';
 
 /// Provides convenience methods on [BuildContext] to retrieve,
 /// manage, and react to application-wide services and state.
-extension ServiceBuildContext on BuildContext {
+extension ServiceContextExtension on BuildContext {
   /// Retrieves or lazily creates a service of type [T], and binds
   /// its lifecycle to this [BuildContext]'s widget lifecycle.
   T serviceOf<T extends Service>(

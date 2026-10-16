@@ -9,7 +9,7 @@ class ExampleService extends Service<int> {
   // Simulates fetching data asynchronously with a 1-second delay.
   @override
   Future<int> fetchData() async {
-    await Future.delayed(.new(seconds: 1));
+    await Future.delayed(const .new(seconds: 1));
     return count += 1;
   }
 }
