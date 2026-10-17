@@ -54,3 +54,8 @@
 ## 1.3.6
 
 - Added `ValueNotifierListExtension` with `add()`, `addAll()`, `remove()`, `removeAt()`, and `clear()` to simplify list state management and notify listeners on changes.
+
+## 1.3.7
+
+- Fixed `BuildContext.watch()` to subscribe to multiple listenables within the same widget and remove all listeners when the widget is disposed.
+- Updated the `equatable` dependency constraint to `^3.0.0`.

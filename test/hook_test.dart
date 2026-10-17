@@ -162,4 +162,45 @@ void main() {
     await tester.pump();
     expect(buildCount, 2);
   });
+
+  testWidgets("watch() subscribes to multiple notifiers and removes both listeners", (tester) async {
+    final first = TestNotifier();
+    final second = TestNotifier();
+    addTearDown(first.dispose);
+    addTearDown(second.dispose);
+
+    var buildCount = 0;
+
+    await tester.pumpWidget(
+      StateScope(
+        child: Builder(
+          builder: (context) {
+            context.watch(first);
+            context.watch(second);
+            buildCount++;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    // Verify that both notifiers register their own listener.
+    expect(first.isListening, isTrue);
+    expect(second.isListening, isTrue);
+    expect(buildCount, 1);
+
+    // Verify that each notifier independently triggers a rebuild.
+    first.value++;
+    await tester.pump();
+    expect(buildCount, 2);
+
+    second.value++;
+    await tester.pump();
+    expect(buildCount, 3);
+
+    // Verify that removing the widget unregisters both listeners.
+    await tester.pumpWidget(const StateScope(child: SizedBox()));
+    expect(first.isListening, isFalse);
+    expect(second.isListening, isFalse);
+  });
 }

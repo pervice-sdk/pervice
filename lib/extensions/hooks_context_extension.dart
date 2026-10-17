@@ -235,14 +235,15 @@ extension HooksContextExtension on BuildContext {
   /// Rebuilds this widget whenever [listener] notifies.
   /// Automatically removes the listener when the widget is disposed.
   void watch(Listenable listener) {
-    final VoidCallback callback = setState;
-
-    onInitState(() {
-      listener.addListener(callback);
-    });
-
-    onDispose(() {
-      listener.removeListener(callback);
-    });
+    stateOf<VoidCallback>(
+      () {
+        final VoidCallback callback = setState;
+        listener.addListener(callback);
+        return () => listener.removeListener(callback);
+      },
+      key: ObjectKey(listener),
+      mode: .read,
+      onDispose: (dispose) => dispose(),
+    );
   }
 }
