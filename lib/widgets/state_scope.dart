@@ -1,7 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:pervice/components/state_id.dart';
-import 'package:pervice/components/state_mode.dart';
-import 'package:pervice/components/state_subscription.dart';
+import 'package:pervice/pervice.dart';
 
 /// A widget that hosts the [StateScopeElement] to manage and
 /// provide application-wide state down the widget subtree.
@@ -65,7 +63,7 @@ class StateScopeElement extends InheritedElement {
 
   /// Ensures a state of type [T] is available, lazily creating
   /// it if necessary, and registers the [dependent] element.
-  ValueNotifier<T> ensureState<T>(
+  ValueState<T> ensureState<T>(
     Element dependent,
     StateId id,
     StateMode mode,
@@ -118,7 +116,7 @@ class StateScopeElement extends InheritedElement {
       subscription.readers.add(dependent);
     }
 
-    return subscription.notifier as ValueNotifier<T>;
+    return subscription.notifier as ValueState<T>;
   }
 
   @override

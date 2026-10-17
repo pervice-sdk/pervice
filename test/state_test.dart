@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('stateOf() returns different instances for no keys', (tester) async {
-    late ValueNotifier<int> state1;
-    late ValueNotifier<int> state2;
+    late ValueState<int> state1;
+    late ValueState<int> state2;
 
     await tester.pumpWidget(
       ServiceScope.withState(
@@ -24,8 +24,8 @@ void main() {
   });
 
   testWidgets('stateOf() returns different instances for different keys', (tester) async {
-    late ValueNotifier<int> state1;
-    late ValueNotifier<int> state2;
+    late ValueState<int> state1;
+    late ValueState<int> state2;
 
     await tester.pumpWidget(
       ServiceScope.withState(
@@ -44,7 +44,7 @@ void main() {
   });
 
   testWidgets('stateOf() rebuilds the widget when the value changes', (tester) async {
-    late ValueNotifier<int> state;
+    late ValueState<int> state;
 
     await tester.pumpWidget(
       Directionality(
@@ -68,8 +68,8 @@ void main() {
   });
 
   testWidgets('stateOf() creates separate states for different elements', (tester) async {
-    late ValueNotifier<int> state1;
-    late ValueNotifier<int> state2;
+    late ValueState<int> state1;
+    late ValueState<int> state2;
 
     final Key key = ValueKey(1);
 
@@ -102,8 +102,8 @@ void main() {
   });
 
   testWidgets('sharedStateOf() shares state across elements with the same key', (tester) async {
-    late ValueNotifier<int> state1;
-    late ValueNotifier<int> state2;
+    late ValueState<int> state1;
+    late ValueState<int> state2;
 
     final Key key = ValueKey(1);
 
@@ -202,7 +202,7 @@ void main() {
   });
 
   testWidgets('stateOf() survives reparenting within the same frame', (tester) async {
-    late ValueNotifier<int> state;
+    late ValueState<int> state;
     var disposeCount = 0;
 
     final child = Builder(
@@ -238,7 +238,7 @@ void main() {
   });
 
   testWidgets('sharedStateOf() survives reparenting within the same frame', (tester) async {
-    late ValueNotifier<int> state;
+    late ValueState<int> state;
     var disposeCount = 0;
 
     final child = Builder(
@@ -279,7 +279,7 @@ void main() {
 
   testWidgets('stateOf() survives pushing and popping a route', (tester) async {
     late BuildContext homeContext;
-    late ValueNotifier<int> state;
+    late ValueState<int> state;
     var disposeCount = 0;
 
     // Create the home state and change its value.
@@ -319,7 +319,7 @@ void main() {
 
   testWidgets('sharedStateOf() survives pushing and popping a route', (tester) async {
     late BuildContext homeContext;
-    late ValueNotifier<int> state;
+    late ValueState<int> state;
     var disposeCount = 0;
 
     // Create the shared home state and change its value.
@@ -358,7 +358,7 @@ void main() {
   });
 
   testWidgets('stateOf() with read mode does not rebuild when the value changes', (tester) async {
-    late ValueNotifier<int> state;
+    late ValueState<int> state;
     var buildCount = 0;
 
     await tester.pumpWidget(

@@ -1,11 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:pervice/components/service.dart';
 import 'package:pervice/components/service_id.dart';
-import 'package:pervice/components/service_mode.dart';
-import 'package:pervice/components/state_id.dart';
-import 'package:pervice/components/state_mode.dart';
-import 'package:pervice/widgets/service_scope.dart';
-import 'package:pervice/widgets/state_scope.dart';
+import 'package:pervice/pervice.dart';
 
 /// Provides convenience methods on [BuildContext] to retrieve,
 /// manage, and react to application-wide services and state.
@@ -31,12 +26,12 @@ extension ServiceContextExtension on BuildContext {
   }
 
   /// Retrieves or lazily creates a state of type [T], and binds
-  /// its [ValueNotifier] lifecycle to this [BuildContext]'s
+  /// its [ValueState] lifecycle to this [BuildContext]'s
   /// widget lifecycle.
   ///
   /// [onDispose] is called with the current value when
   /// the state is removed from its scope and disposed.
-  ValueNotifier<T> stateOf<T>(
+  ValueState<T> stateOf<T>(
     T Function() create, {
     Key? key,
     StateMode mode = .watch,
@@ -62,7 +57,7 @@ extension ServiceContextExtension on BuildContext {
   /// [onDispose] is called with the current value when
   /// the last dependent element is removed and
   /// the shared state is disposed.
-  ValueNotifier<T> sharedStateOf<T>(
+  ValueState<T> sharedStateOf<T>(
     T Function() create, {
     required Key key,
     StateMode mode = .watch,

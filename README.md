@@ -129,7 +129,7 @@ void main() {
 
 You can also place a standalone `StateScope` around only the subtree that needs state.
 
-`stateOf()` returns a `ValueNotifier<T>` and rebuilds the calling widget when its value changes:
+`stateOf()` returns a `ValueState<T>` and rebuilds the calling widget when its value changes:
 
 ```dart
 class CounterView extends StatelessWidget {
