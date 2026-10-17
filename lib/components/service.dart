@@ -52,7 +52,8 @@ abstract class Service<T> extends ChangeNotifier {
   bool get canRethrow => false;
 
   T? _data;
-  dynamic _error;
+  Object? _error;
+  StackTrace? _stackTrace;
 
   /// Whether this service has been disposed, preventing updates from pending requests.
   bool _isDisposed = false;
@@ -78,7 +79,7 @@ abstract class Service<T> extends ChangeNotifier {
   }
 
   /// Returns the current error. Throws if no error is present.
-  dynamic get error {
+  Object get error {
     assert(
       _error != null || status == .failed,
       "Error must exist before access.",
@@ -91,18 +92,32 @@ abstract class Service<T> extends ChangeNotifier {
     return _error!;
   }
 
+  /// Returns the stack trace in the failed state.
+  StackTrace get stackTrace {
+    assert(
+      status == .failed,
+      "Stack trace should only be accessed when ServiceStatus.failed.",
+    );
+
+    return _stackTrace!;
+  }
+
   /// Returns the current data regardless of its existence.
   T? get maybeData => _data;
 
   /// Returns the current error regardless of its existence.
-  dynamic get maybeError => _error;
+  Object? get maybeError => _error;
+
+  /// Returns the current stack trace regardless of its existence.
+  StackTrace? get maybeStackTrace => _stackTrace;
 
   /// Called when a data load fails.
   ///
-  /// By default, this sets the state to [ServiceStatus.failed].
-  void fail(dynamic error) {
+  /// Stores the error and its stack trace, then sets [ServiceStatus.failed].
+  void fail(Object error, StackTrace stackTrace) {
     if (_isDisposed) return;
     _error = error;
+    _stackTrace = stackTrace;
     _status = .failed;
   }
 
@@ -129,8 +144,8 @@ abstract class Service<T> extends ChangeNotifier {
 
     try {
       done(await fetchData());
-    } catch (error) {
-      fail(error);
+    } catch (error, stackTrace) {
+      fail(error, stackTrace);
 
       // Rethrows the error if [canRethrow] is enabled.
       if (canRethrow) rethrow;
@@ -166,8 +181,8 @@ abstract class Service<T> extends ChangeNotifier {
       _status = .loading;
       done(await fetchData());
       return data;
-    } catch (error) {
-      fail(error);
+    } catch (error, stackTrace) {
+      fail(error, stackTrace);
       rethrow;
     } finally {
       dispose();

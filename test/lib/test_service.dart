@@ -12,10 +12,11 @@ class TestService extends Service<String> {
   static const duration = Duration(microseconds: 1);
   static const sampleData = "Hello, World!";
   static final sampleError = Error();
+  static final sampleStackTrace = StackTrace.fromString('TestService.fetchData');
 
   @override
   Future<String> fetchData() async {
-    if (throwError) throw sampleError;
+    if (throwError) Error.throwWithStackTrace(sampleError, sampleStackTrace);
 
     await Future.delayed(.new(microseconds: 1));
     return sampleData;

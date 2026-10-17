@@ -9,14 +9,14 @@ extension ServiceExtension<T> on Service<T> {
     Widget Function()? loading,
     Widget Function(T data)? refresh,
     Widget Function(T data)? loaded,
-    Widget Function(Object error)? failed,
+    Widget Function(Object error, StackTrace stackTrace)? failed,
   }) {
     final widget = switch (status) {
       .none => (none ?? loading)?.call(),
       .loading => loading?.call(),
       .refresh => (refresh ?? loaded)?.call(data),
       .loaded => loaded?.call(data),
-      .failed => failed?.call(error),
+      .failed => failed?.call(error, stackTrace),
     };
 
     if (widget == null) {

@@ -10,6 +10,7 @@ void main() {
     expect(service.status, ServiceStatus.none);
     expect(service.maybeData, isNull);
     expect(service.maybeError, isNull);
+    expect(service.maybeStackTrace, isNull);
   });
 
   test(
@@ -41,8 +42,39 @@ void main() {
       expect(service.status, ServiceStatus.failed);
       expect(service.maybeData, isNull);
       expect(service.maybeError, TestService.sampleError);
+
+      // Verify that the original stack trace is stored and passed to when().
+      expect(service.stackTrace.toString(), TestService.sampleStackTrace.toString());
+      expect(service.maybeStackTrace, same(service.stackTrace));
+      service.when(
+        failed: (error, stackTrace) {
+          expect(error, same(TestService.sampleError));
+          expect(stackTrace, same(service.stackTrace));
+          return const SizedBox();
+        },
+      );
     },
   );
+
+  test('request() preserves the original error and stack trace', () async {
+    final service = TestService(throwError: true);
+    Object? caughtError;
+    StackTrace? caughtStackTrace;
+
+    // Make a failing one-time request and capture the propagated error.
+    try {
+      await service.request();
+    } catch (error, stackTrace) {
+      caughtError = error;
+      caughtStackTrace = stackTrace;
+    }
+
+    // Verify that storing and rethrowing preserve the original error and stack.
+    expect(caughtError, same(TestService.sampleError));
+    expect(caughtStackTrace.toString(), TestService.sampleStackTrace.toString());
+    expect(service.maybeStackTrace.toString(), TestService.sampleStackTrace.toString());
+    expect(service.isDisposed, isTrue);
+  });
 
   test("refresh() should keep existing data while loading new data", () async {
     final service = TestService();

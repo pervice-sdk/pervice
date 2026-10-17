@@ -286,7 +286,7 @@ Widget build(BuildContext context) {
     loading: () => const CircularProgressIndicator(),
     refresh: (data) => Text('Refreshing: $data'),
     loaded: (data) => Text('Count: $data'),
-    failed: (error) => Text('Failed: $error'),
+    failed: (error, stackTrace) => Text('Failed: $error'),
   );
 }
 ```
@@ -307,6 +307,8 @@ Every service exposes:
 | `maybeData` | Current data, or `null` when unavailable |
 | `error` | Current error in the failed state |
 | `maybeError` | Current error, or `null` when unavailable |
+| `stackTrace` | Original stack trace in the failed state |
+| `maybeStackTrace` | Last stored stack trace, or `null` when unavailable |
 | `load()` | Loads data and replaces the current state |
 | `refresh()` | Reloads while retaining existing data |
 | `request()` | Makes a one-time request and returns the loaded data |
@@ -392,6 +394,7 @@ On failure:
 - `status` becomes `ServiceStatus.failed`.
 - `hasError` becomes `true`.
 - The exception is available through `error` and `maybeError`.
+- The original stack trace is available through `stackTrace` and `maybeStackTrace`.
 - `load()` and `refresh()` complete without rethrowing the exception by default.
 
 Override `canRethrow` to propagate loading errors to the caller and handle them with `try`/`catch`:
@@ -401,14 +404,15 @@ Override `canRethrow` to propagate loading errors to the caller and handle them 
 bool get canRethrow => true;
 ```
 
-For custom error logging or reporting, override `fail()` and call `super.fail(error)` to preserve the error state:
+For custom error logging or reporting, override `fail()` and call `super.fail(error, stackTrace)` to preserve the error state:
 
 ```dart
 @override
-void fail(dynamic error) {
-  super.fail(error);
+void fail(Object error, StackTrace stackTrace) {
+  super.fail(error, stackTrace);
 
   // Log or report the error.
   debugPrint('Failed to load $runtimeType: $error');
+  debugPrintStack(stackTrace: stackTrace);
 }
 ```

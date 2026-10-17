@@ -64,3 +64,9 @@
 
 - Added `Service.onData()` to receive data when the service notifies listeners while loaded, returning a callback to remove the listener.
 - Added `ValueState<T>` as an alias for `ValueNotifier<T>` to clarify the return type of `stateOf`.
+
+## 1.4.0
+
+- **Breaking:** Changed `Service.fail()` to require an `Object` error and a `StackTrace`. Update overrides and calls to `fail(error, stackTrace)`.
+- **Breaking:** Changed the `Service.when()` failure callback to receive `(error, stackTrace)`.
+- Added `Service.stackTrace` and `Service.maybeStackTrace`, preserving the original stack trace when `load()` or `request()` fails.

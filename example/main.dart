@@ -65,8 +65,8 @@ class ExampleWidget extends StatelessWidget {
     // service.when(
     //   none: () => Text("Service is none"),
     //   loading: () => CircularProgressIndicator(), // Shown while data is loading
-    //   refresh: () => CircularProgressIndicator(), // Optional: Shown during a refresh
-    //   failed: (error) => Text("Service failed: $error"), // Shown if an error occurs
+    //   refresh: (data) => CircularProgressIndicator(), // Optional: Shown during a refresh
+    //   failed: (error, stackTrace) => Text("Service failed: $error"), // Shown if an error occurs
     //   loaded: (data) => Text("Data: $data"), // Shown when data is successfully loaded
     // );
 
