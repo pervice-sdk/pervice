@@ -321,23 +321,6 @@ You can also assign `data` directly. A changed value automatically notifies watc
 service.data = 42;
 ```
 
-### Data Callbacks
-
-Use `onData()` to receive data whenever the service notifies listeners while loaded. In widgets, prefer registering once in `context.onInitState`:
-
-```dart
-context.onInitState(() {
-  final unsubscribe = service.onData((data) {
-    debugPrint('Data: $data');
-  });
-
-  // Only if the subscription should end with this widget.
-  context.onDispose(unsubscribe);
-});
-```
-
-Listeners are automatically cleared when the service is disposed. Use the returned callback in `context.onDispose` only when the subscription should end with the widget. These context hooks require `StateScope` or `ServiceScope.withState`.
-
 ### One-time Requests
 
 Use `request()` when a service is only needed to obtain a single result outside
