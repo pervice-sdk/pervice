@@ -27,4 +27,24 @@ extension ServiceExtension<T> on Service<T> {
 
     return KeyedSubtree(key: ValueKey(status), child: widget);
   }
+
+  /// Calls [callback] whenever the service notifies listeners while loaded.
+  ///
+  /// When used in a widget, prefer registering in `context.onInitState`.
+  ///
+  /// Listeners are automatically cleared when the service is disposed.
+  /// To end the subscription when the widget is disposed,
+  /// call the returned callback in `context.onDispose`.
+  ///
+  /// Returns a callback that removes the listener.
+  VoidCallback onData(void Function(T data) callback) {
+    void listener() {
+      if (status == .loaded) {
+        callback(data);
+      }
+    }
+
+    addListener(listener);
+    return () => removeListener(listener);
+  }
 }

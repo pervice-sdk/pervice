@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 
+/// An alias for [ValueNotifier] that clarifies the return type of `stateOf`.
+typedef ValueState<T> = ValueNotifier<T>;
+
 /// Provides convenience methods to simplify list state management.
 extension ValueNotifierListExtension<T> on ValueNotifier<List<T>> {
   /// Appends [element] to the list and notifies listeners.

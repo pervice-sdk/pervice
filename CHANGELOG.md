@@ -59,3 +59,8 @@
 
 - Fixed `BuildContext.watch()` to subscribe to multiple listenables within the same widget and remove all listeners when the widget is disposed.
 - Updated the `equatable` dependency constraint to `^3.0.0`.
+
+## 1.3.8
+
+- Added `Service.onData()` to receive data when the service notifies listeners while loaded, returning a callback to remove the listener.
+- Added `ValueState<T>` as an alias for `ValueNotifier<T>` to clarify the return type of `stateOf`.
