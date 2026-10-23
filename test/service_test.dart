@@ -321,4 +321,33 @@ void main() {
   test("request() completes for void data", () async {
     await expectLater(TestVoidService().request(), completes);
   });
+
+  testWidgets('serviceFor() retrieves matching service or throws', (tester) async {
+    final firstKey = const ValueKey('first');
+    final secondKey = const ValueKey('second');
+
+    await tester.pumpWidget(
+      ServiceScope(
+        child: Builder(
+          builder: (context) {
+            final service = context.serviceOf(TestService.new, key: firstKey);
+
+            // Retrieve the same instance using its type and key.
+            expect(context.serviceFor<TestService>(key: firstKey), same(service));
+
+            // Reject a key that has not been registered.
+            expect(() => context.serviceFor<TestService>(key: secondKey), throwsStateError);
+
+            // Reject a different type even when the key matches.
+            expect(() => context.serviceFor<TestService2>(key: firstKey), throwsStateError);
+
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    // Complete the service load before the test ends.
+    await tester.pumpAndSettle();
+  });
 }

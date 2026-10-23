@@ -181,6 +181,31 @@ final controller = context.stateOf(
 
 Local state is retained across rebuilds and disposed when its owning element is removed. Shared state remains active until its last dependent element is removed.
 
+## Retrieving Existing Services and State
+
+Use `serviceFor()`, `stateFor()`, and `sharedStateFor()` to retrieve an instance already created with the corresponding `Of` method. They do not create missing instances and throw a `StateError` when no match exists.
+
+| Method | Lookup scope | Key |
+| --- | --- | --- |
+| `serviceFor<T>()` | Services under the same `ServiceScope` | Optional |
+| `stateFor<T>()` | Local state owned by the calling element | Required |
+| `sharedStateFor<T>()` | Shared state under the same `StateScope` | Required |
+
+Specify the same type and key used when creating the instance. A key alone does not identify a service or state.
+
+```dart
+final service = context.serviceFor<CounterService>();
+
+// Create and retrieve local state within the same element.
+final ... = context.stateOf(() => 0, key: const ValueKey('counter'));
+final ... = context.stateFor<int>(key: const ValueKey('counter'));
+
+// Retrieve existing shared state.
+final sharedCounter = context.sharedStateFor<int>(
+  key: const ValueKey('shared-counter'),
+);
+```
+
 ## BuildContext Hooks
 
 Common Flutter controllers can be created directly from `BuildContext` without converting a widget to `StatefulWidget`. Hooks use `stateOf()` internally, so the widget tree must include `StateScope` or `ServiceScope.withState`.

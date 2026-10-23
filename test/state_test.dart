@@ -3,6 +3,69 @@ import 'package:pervice/pervice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('stateFor() retrieves matching state or throws', (tester) async {
+    final firstKey = const ValueKey('first');
+    final secondKey = const ValueKey('second');
+
+    await tester.pumpWidget(
+      StateScope(
+        child: Builder(
+          builder: (context) {
+            final state = context.stateOf(() => 1, key: firstKey);
+
+            // Retrieve the same instance using its type and key.
+            expect(context.stateFor<int>(key: firstKey), same(state));
+
+            // Reject a key that has not been registered.
+            expect(() => context.stateFor<int>(key: secondKey), throwsStateError);
+
+            // Reject a different type even when the key matches.
+            expect(() => context.stateFor<String>(key: firstKey), throwsStateError);
+
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+  });
+
+  testWidgets('sharedStateFor() retrieves matching state or throws', (tester) async {
+    final firstKey = const ValueKey('first');
+    final secondKey = const ValueKey('second');
+    late ValueState<int> sharedState;
+
+    await tester.pumpWidget(
+      StateScope(
+        child: Column(
+          children: [
+            Builder(
+              builder: (context) {
+                // Register shared state in the first element.
+                sharedState = context.sharedStateOf(() => 1, key: firstKey);
+
+                return const SizedBox();
+              },
+            ),
+            Builder(
+              builder: (context) {
+                // Retrieve the same instance from another element.
+                expect(context.sharedStateFor<int>(key: firstKey), same(sharedState));
+
+                // Reject a key that has not been registered.
+                expect(() => context.sharedStateFor<int>(key: secondKey), throwsStateError);
+
+                // Reject a different type even when the key matches.
+                expect(() => context.sharedStateFor<String>(key: firstKey), throwsStateError);
+
+                return const SizedBox();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  });
+
   testWidgets('stateOf() returns different instances for no keys', (tester) async {
     late ValueState<int> state1;
     late ValueState<int> state2;

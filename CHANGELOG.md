@@ -70,3 +70,8 @@
 - **Breaking:** Changed `Service.fail()` to require an `Object` error and a `StackTrace`. Update overrides and calls to `fail(error, stackTrace)`.
 - **Breaking:** Changed the `Service.when()` failure callback to receive `(error, stackTrace)`.
 - Added `Service.stackTrace` and `Service.maybeStackTrace`, preserving the original stack trace when `load()` or `request()` fails.
+
+## 1.5.0
+
+- Added `BuildContext.serviceFor()`, `stateFor()`, and `sharedStateFor()` to retrieve existing services and state by type and key, with watch/read modes and a `StateError` when no matching instance exists.
+- Added `ValueNotifierExtension` with `getter()` and `setter()`, and `ValueNotifierBoolExtension` with `toggle()` to simplify state management.

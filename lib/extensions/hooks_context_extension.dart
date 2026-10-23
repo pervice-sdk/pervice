@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pervice/components/hook_ticker_provider.dart';
-import 'package:pervice/extensions/service_context_extension.dart';
+import 'package:pervice/extensions/build_context_extension.dart';
 
 /// Provides a suite of custom hooks via [BuildContext] to manage the lifecycle
 /// of common Flutter controllers and resource-heavy objects automatically.
