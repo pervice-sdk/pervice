@@ -89,7 +89,7 @@ class ExampleSubtreeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final service = context.serviceOf(ExampleService.new);
+    final service = context.serviceFor<ExampleService>();
 
     return Column(
       mainAxisSize: .min,
@@ -99,6 +99,7 @@ class ExampleSubtreeWidget extends StatelessWidget {
           opacity: service.isRefreshing ? 0.5 : 1,
           child: Text(service.data.toString()),
         ),
+
         // Simple refresh implementation.
         IgnorePointer(
           ignoring: service.isRefreshing,

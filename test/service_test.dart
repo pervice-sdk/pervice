@@ -322,6 +322,26 @@ void main() {
     await expectLater(TestVoidService().request(), completes);
   });
 
+  testWidgets('serviceFor() retrieves a service by type without a key', (tester) async {
+    await tester.pumpWidget(
+      ServiceScope(
+        child: Builder(
+          builder: (context) {
+            final service = context.serviceOf(TestService.new);
+
+            // Retrieve the same instance using only its type.
+            expect(context.serviceFor<TestService>(), same(service));
+
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    // Complete the service load before the test ends.
+    await tester.pumpAndSettle();
+  });
+
   testWidgets('serviceFor() retrieves matching service or throws', (tester) async {
     final firstKey = const ValueKey('first');
     final secondKey = const ValueKey('second');

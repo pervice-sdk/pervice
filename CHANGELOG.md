@@ -75,3 +75,8 @@
 
 - Added `BuildContext.serviceFor()`, `stateFor()`, and `sharedStateFor()` to retrieve existing services and state by type and key, with watch/read modes and a `StateError` when no matching instance exists.
 - Added `ValueNotifierExtension` with `getter()` and `setter()`, and `ValueNotifierBoolExtension` with `toggle()` to simplify state management.
+
+## 1.5.1
+
+- Added `ValueNotifier<bool>.run()` to set the value to `true` while an async callback runs and reset it to `false` even if the callback throws.
+- Added a package screenshot for pub.dev.

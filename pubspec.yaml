@@ -1,6 +1,6 @@
 name: pervice
 description: A Flutter-native MVVM service layer that creates, loads, watches, shares, and disposes services according to the widget lifecycle.
-version: 1.5.0
+version: 1.5.1
 repository: https://github.com/pervice-sdk/pervice
 topics:
   - state-management
@@ -8,6 +8,10 @@ topics:
   - flutter-architecture
   - reactive-programming
   - hooks
+
+screenshots:
+  - description: 'Pervice logo'
+    path: image/logo.png
 
 environment:
   sdk: '>=3.12.0 <4.0.0'

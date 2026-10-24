@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 
 /// An alias for [ValueNotifier] that clarifies the return type of `stateOf`.
 typedef ValueState<T> = ValueNotifier<T>;
@@ -19,6 +19,17 @@ extension ValueNotifierBoolExtension on ValueNotifier<bool> {
   /// Reverses the current boolean value.
   void toggle() {
     value = !value;
+  }
+
+  /// Sets the value to true while the callback
+  /// runs and resets it to false afterward.
+  Future<void> run(AsyncCallback callback) async {
+    try {
+      value = true;
+      await callback();
+    } finally {
+      value = false;
+    }
   }
 }
 
