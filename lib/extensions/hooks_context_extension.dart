@@ -204,6 +204,29 @@ extension HooksContextExtension on BuildContext {
     return state.value;
   }
 
+  /// Creates and automatically cancels a [StreamSubscription].
+  StreamSubscription<T> useStreamSubscription<T>(
+    Stream<T> stream, {
+    required ValueChanged<T> onData,
+    Function? onError,
+    VoidCallback? onDone,
+    bool? cancelOnError,
+  }) {
+    final state = stateOf(
+      () => stream.listen(
+        onData,
+        onError: onError,
+        onDone: onDone,
+        cancelOnError: cancelOnError,
+      ),
+      key: ObjectKey(stream),
+      mode: .read,
+      onDispose: (e) => e.cancel(),
+    );
+
+    return state.value;
+  }
+
   /// Runs [callback] and marks a widget for rebuilding.
   ///
   /// Rebuilds the current widget when [T] is omitted or is [Widget].

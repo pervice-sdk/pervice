@@ -84,3 +84,4 @@
 ## 1.5.2
 
 - Added `BuildContext.useCurvedAnimation()` to create a `CurvedAnimation` and automatically dispose it when the widget is removed.
+- Added `BuildContext.useStreamSubscription()` to create a `StreamSubscription` and automatically cancel it when the widget is removed.
