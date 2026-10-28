@@ -242,8 +242,10 @@ Available hooks:
 | `useFocusNode()` | `FocusNode` |
 | `useTickerProvider()` / `useVsync()` | `TickerProvider` |
 | `useAnimationController()` | `AnimationController` |
+| `useCurvedAnimation()` | `CurvedAnimation` |
 | `useStreamController<T>()` | `StreamController<T>` |
 | `useStreamControllerBroadcast<T>()` | `StreamController<T>.broadcast` |
+| `useStreamSubscription<T>()` | `StreamSubscription<T>` |
 
 Animation hooks automatically reuse the same ticker provider within the calling widget when `vsync` is omitted:
 
