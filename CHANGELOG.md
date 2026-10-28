@@ -80,3 +80,7 @@
 
 - Added `ValueNotifier<bool>.run()` to set the value to `true` while an async callback runs and reset it to `false` even if the callback throws.
 - Added a package screenshot for pub.dev.
+
+## 1.5.2
+
+- Added `BuildContext.useCurvedAnimation()` to create a `CurvedAnimation` and automatically dispose it when the widget is removed.

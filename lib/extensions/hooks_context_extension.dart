@@ -146,6 +146,24 @@ extension HooksContextExtension on BuildContext {
     return state.value;
   }
 
+  /// Creates and automatically disposes an [CurvedAnimation].
+  CurvedAnimation useCurvedAnimation({
+    required Animation<double> parent,
+    required Curve curve,
+    Curve? reverseCurve,
+  }) {
+    final state = stateOf(
+      () => CurvedAnimation(
+        parent: parent,
+        curve: curve,
+        reverseCurve: reverseCurve,
+      ),
+      onDispose: (e) => e.dispose(),
+    );
+
+    return state.value;
+  }
+
   /// Creates and automatically disposes a [StreamController].
   StreamController<T> useStreamController<T>({
     void Function()? onListen,
