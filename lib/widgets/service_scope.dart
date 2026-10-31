@@ -66,7 +66,7 @@ class ServiceScopeElement extends InheritedElement {
     final subscription = _subscriptions.putIfAbsent(id, () {
       final service = create();
 
-      if (service.status == ServiceStatus.none) {
+      if (service.status == .none) {
         service.load();
       }
 
@@ -81,7 +81,7 @@ class ServiceScopeElement extends InheritedElement {
       }
 
       service.addListener(listener);
-      sub = ServiceSubscription(service: service, listener: listener);
+      sub = .new(service: service, listener: listener);
       return sub;
     });
 

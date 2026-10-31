@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-/// An alias for [ValueNotifier] that clarifies the return type of `stateOf`.
-typedef ValueState<T> = ValueNotifier<T>;
-
 /// Provides convenience methods to simplify state management.
 extension ValueNotifierExtension<T> on ValueNotifier<T> {
   /// Updates the notifier with the given value.

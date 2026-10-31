@@ -28,7 +28,11 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: ServiceScope.withState(
         child: Scaffold(
-          body: SafeArea(child: Center(child: ExampleWidget())),
+          body: SafeArea(
+            child: Center(
+              child: ExampleWidget(),
+            ),
+          ),
         ),
       ),
     );
@@ -103,7 +107,10 @@ class ExampleSubtreeWidget extends StatelessWidget {
         // Simple refresh implementation.
         IgnorePointer(
           ignoring: service.isRefreshing,
-          child: TextButton(onPressed: service.refresh, child: Text("Refesh")),
+          child: TextButton(
+            onPressed: service.refresh,
+            child: Text("Refesh"),
+          ),
         ),
       ],
     );

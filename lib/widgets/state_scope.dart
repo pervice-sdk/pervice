@@ -84,12 +84,12 @@ class StateScopeElement extends InheritedElement {
         counter.count += 1;
       }
 
-      id = StateId(element: id.element, key: ValueKey(counter.count), type: T);
+      id = .new(element: id.element, key: ValueKey(counter.count), type: T);
     }
 
     // Retrieve the existing state or lazily create a new one.
     final subscription = _subscriptions.putIfAbsent(id, () {
-      final notifier = ValueNotifier(create());
+      final notifier = ValueState(create());
 
       late final StateSubscription<T> sub;
 
@@ -102,7 +102,8 @@ class StateScopeElement extends InheritedElement {
       }
 
       notifier.addListener(listener);
-      sub = StateSubscription(notifier: notifier, listener: listener, onDispose: onDispose);
+      sub = .new(notifier: notifier, listener: listener, onDispose: onDispose);
+
       return sub;
     });
 

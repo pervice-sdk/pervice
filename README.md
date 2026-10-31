@@ -147,6 +147,16 @@ class CounterView extends StatelessWidget {
 }
 ```
 
+`ValueState<T>` extends `ValueNotifier<T>` and provides shorthand methods for reading and updating its value:
+
+```dart
+// Equivalent to: final value = counter.value;
+final value = counter();
+
+// Equivalent to: counter.value = 10;
+counter.set(10);
+```
+
 Each state belongs to the element that calls `stateOf()`. Unkeyed calls within that element are identified by their type and invocation order. Keep calls in a stable order, or provide a key when calls may be conditional or reordered:
 
 ```dart

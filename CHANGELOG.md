@@ -85,3 +85,8 @@
 
 - Added `BuildContext.useCurvedAnimation()` to create a `CurvedAnimation` and automatically dispose it when the widget is removed.
 - Added `BuildContext.useStreamSubscription()` to create a `StreamSubscription` and automatically cancel it when the widget is removed.
+
+## 1.6.0
+
+- **Breaking:** Changed `ValueState<T>` from a type alias to a subclass of `ValueNotifier<T>`. Plain `ValueNotifier<T>` instances can no longer be used where `ValueState<T>` is required.
+- Added `ValueState.call()` and `ValueState.set()` as shorthand methods for reading and updating the current value.
