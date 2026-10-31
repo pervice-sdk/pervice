@@ -9,4 +9,7 @@ class ValueState<T> extends ValueNotifier<T> {
 
   /// Updates the current value.
   void set(T newValue) => value = newValue;
+
+  /// Notifies listeners that the state has changed.
+  void notifyChanged() => notifyListeners();
 }

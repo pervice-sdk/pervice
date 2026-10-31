@@ -90,3 +90,7 @@
 
 - **Breaking:** Changed `ValueState<T>` from a type alias to a subclass of `ValueNotifier<T>`. Plain `ValueNotifier<T>` instances can no longer be used where `ValueState<T>` is required.
 - Added `ValueState.call()` and `ValueState.set()` as shorthand methods for reading and updating the current value.
+
+## 1.6.1
+
+- Added `ValueState.notifyChanged()` to manually notify listeners when the current value is modified in place.
