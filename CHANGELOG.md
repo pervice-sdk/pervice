@@ -98,6 +98,7 @@
 ## 1.7.0
 
 - **Breaking:** Removed `ValueState.call()` and `ValueState.set()`. Use `state.value` to read the current value and `state.value = newValue` to update it.
+- Added `ValueState.initialValue` and `reset()` to restore the value supplied at creation. The initial value is stored without copying.
 - Added `ValueNotifier.hasValue` and `hasNoValue` to check whether the current value is null.
 - Added `ValueNotifierStringExtension` with `isEmpty`, `isNotEmpty`, `length`, `trimmed`, and `clear()` for string state management.
 - Added `isEmpty`, `isNotEmpty`, `length`, `first`, `firstOrNull`, `last`, `lastOrNull`, `single`, and `singleOrNull` getters to `ValueNotifier<List<T>>`.
