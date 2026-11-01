@@ -5,10 +5,10 @@ class ValueState<T> extends ValueNotifier<T> {
   ValueState(super.value);
 
   /// Returns the current value.
-  T call() => value;
+  T get it => value;
 
   /// Updates the current value.
-  void set(T newValue) => value = newValue;
+  set it(T newValue) => value = newValue;
 
   /// Notifies listeners that the state has changed.
   void notifyChanged() => notifyListeners();

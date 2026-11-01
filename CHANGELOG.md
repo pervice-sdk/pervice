@@ -94,3 +94,10 @@
 ## 1.6.1
 
 - Added `ValueState.notifyChanged()` to manually notify listeners when the current value is modified in place.
+
+## 1.7.0
+
+- **Breaking:** Replaced `ValueState.call()` and `ValueState.set()` with the `it` getter and setter. Replace `state()` with `state.it` and `state.set(value)` with `state.it = value`.
+- Added `ValueNotifier.hasValue` and `hasNoValue` to check whether the current value is null.
+- Added `isEmpty`, `isNotEmpty`, `length`, `first`, `firstOrNull`, `last`, `lastOrNull`, `single`, and `singleOrNull` getters to `ValueNotifier<List<T>>`.
+- Added `[]` and `[]=` operators to `ValueNotifier<List<T>>` for indexed access and replacement, notifying listeners when an element is replaced.
