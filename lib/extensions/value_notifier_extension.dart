@@ -17,6 +17,24 @@ extension ValueNotifierExtension<T> on ValueNotifier<T> {
   T getter() => value;
 }
 
+/// Provides convenience methods to simplify string state management.
+extension ValueNotifierStringExtension on ValueNotifier<String> {
+  /// Returns true if the current value is empty.
+  bool get isEmpty => value.isEmpty;
+
+  /// Returns true if the current value is not empty.
+  bool get isNotEmpty => value.isNotEmpty;
+
+  /// Returns the number of UTF-16 code units in the string.
+  int get length => value.length;
+
+  /// Returns the current value without leading and trailing whitespace.
+  String get trimmed => value.trim();
+
+  /// Clears the current value by setting it to an empty string.
+  void clear() => value = '';
+}
+
 /// Provides convenience methods to simplify boolean state management.
 extension ValueNotifierBoolExtension on ValueNotifier<bool> {
   /// Reverses the current boolean value.

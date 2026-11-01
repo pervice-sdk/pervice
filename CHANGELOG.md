@@ -97,7 +97,8 @@
 
 ## 1.7.0
 
-- **Breaking:** Replaced `ValueState.call()` and `ValueState.set()` with the `it` getter and setter. Replace `state()` with `state.it` and `state.set(value)` with `state.it = value`.
+- **Breaking:** Removed `ValueState.call()` and `ValueState.set()`. Use `state.value` to read the current value and `state.value = newValue` to update it.
 - Added `ValueNotifier.hasValue` and `hasNoValue` to check whether the current value is null.
+- Added `ValueNotifierStringExtension` with `isEmpty`, `isNotEmpty`, `length`, `trimmed`, and `clear()` for string state management.
 - Added `isEmpty`, `isNotEmpty`, `length`, `first`, `firstOrNull`, `last`, `lastOrNull`, `single`, and `singleOrNull` getters to `ValueNotifier<List<T>>`.
 - Added `[]` and `[]=` operators to `ValueNotifier<List<T>>` for indexed access and replacement, notifying listeners when an element is replaced.
