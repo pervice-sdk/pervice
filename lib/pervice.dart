@@ -2,10 +2,12 @@ library;
 
 export 'components/hook_ticker_provider.dart';
 export 'components/service_mode.dart';
+export 'components/service_ref.dart';
 export 'components/service_subscription.dart';
 export 'components/service.dart';
 export 'components/state_id.dart';
 export 'components/state_mode.dart';
+export 'components/state_ref.dart';
 export 'components/state_subscription.dart';
 export 'components/value_state.dart';
 
