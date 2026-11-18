@@ -103,3 +103,10 @@
 - Added `ValueNotifierStringExtension` with `isEmpty`, `isNotEmpty`, `length`, `trimmed`, and `clear()` for string state management.
 - Added `isEmpty`, `isNotEmpty`, `length`, `first`, `firstOrNull`, `last`, `lastOrNull`, `single`, and `singleOrNull` getters to `ValueNotifier<List<T>>`.
 - Added `[]` and `[]=` operators to `ValueNotifier<List<T>>` for indexed access and replacement, notifying listeners when an element is replaced.
+
+## 1.8.0
+
+- Moved implementation files under `lib/src/` without changing the public API.
+- **Breaking:** Require Dart 3.13 and Flutter 3.47 or newer.
+- **Breaking:** `useTabController()` now returns the standalone `material_ui` `TabController`.
+- Migrated the package to `material_ui` and restored the full Pana score requirement.

@@ -1,18 +1,18 @@
 library;
 
-export 'components/hook_ticker_provider.dart';
-export 'components/service_mode.dart';
-export 'components/service_subscription.dart';
-export 'components/service.dart';
-export 'components/state_id.dart';
-export 'components/state_mode.dart';
-export 'components/state_subscription.dart';
-export 'components/value_state.dart';
+export 'src/components/hook_ticker_provider.dart';
+export 'src/components/service_mode.dart';
+export 'src/components/service_subscription.dart';
+export 'src/components/service.dart';
+export 'src/components/state_id.dart';
+export 'src/components/state_mode.dart';
+export 'src/components/state_subscription.dart';
+export 'src/components/value_state.dart';
 
-export 'extensions/build_context_extension.dart';
-export 'extensions/hooks_context_extension.dart';
-export 'extensions/service_extension.dart';
-export 'extensions/value_notifier_extension.dart';
+export 'src/extensions/build_context_extension.dart';
+export 'src/extensions/hooks_context_extension.dart';
+export 'src/extensions/service_extension.dart';
+export 'src/extensions/value_notifier_extension.dart';
 
-export 'widgets/service_scope.dart';
-export 'widgets/state_scope.dart';
+export 'src/widgets/service_scope.dart';
+export 'src/widgets/state_scope.dart';

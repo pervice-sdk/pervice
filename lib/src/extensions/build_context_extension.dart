@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:pervice/components/service_id.dart';
 import 'package:pervice/pervice.dart';
+import 'package:pervice/src/components/service_id.dart';
 
 /// Provides convenience methods on [BuildContext] to retrieve,
 /// manage, and react to application-wide services and state.

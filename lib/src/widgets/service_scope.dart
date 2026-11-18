@@ -1,9 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:pervice/components/service.dart';
-import 'package:pervice/components/service_id.dart';
-import 'package:pervice/components/service_mode.dart';
-import 'package:pervice/components/service_subscription.dart';
-import 'package:pervice/widgets/state_scope.dart';
+import 'package:pervice/pervice.dart';
+import 'package:pervice/src/components/service_id.dart';
 
 /// A widget that hosts the [ServiceScopeElement] to manage and
 /// provide application-wide services down the widget subtree.

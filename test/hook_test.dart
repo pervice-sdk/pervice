@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pervice/pervice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'lib/test_notifier.dart';
+import 'src/test_notifier.dart';
 
 void main() {
   testWidgets("setState() rebuilds only the current widget", (tester) async {
