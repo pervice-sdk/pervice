@@ -6,7 +6,7 @@ import 'package:pervice/pervice.dart';
 ///
 /// Only one [StateScope] should exist near the root of the widget tree.
 class StateScope extends InheritedWidget {
-  const StateScope({
+  const new({
     super.key,
     required super.child,
   });
@@ -35,7 +35,7 @@ class _BuildCounter {
 }
 
 class StateScopeElement extends InheritedElement {
-  StateScopeElement(StateScope super.widget);
+  new(StateScope super.widget);
 
   /// Active state subscriptions mapped by their state [StateId].
   ///

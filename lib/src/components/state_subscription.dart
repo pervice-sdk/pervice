@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 /// This class acts as a bridge that registers event listeners, tracks active
 /// [watchers] and [readers], and disposes of the state once it has no dependents.
 class StateSubscription<T> {
-  StateSubscription({
+  new({
     required this.notifier,
     required this.listener,
     this.onDispose,

@@ -7,12 +7,12 @@ import 'package:pervice/src/components/service_id.dart';
 ///
 /// Only one [ServiceScope] should exist near the root of the widget tree.
 class ServiceScope extends InheritedWidget {
-  const ServiceScope({
+  const new({
     super.key,
     required super.child,
   });
 
-  ServiceScope.withState({
+  new withState({
     super.key,
     required Widget child,
   }) : super(child: StateScope(child: child));

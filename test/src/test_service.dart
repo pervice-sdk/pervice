@@ -4,7 +4,7 @@ import 'package:pervice/pervice.dart';
 ///
 /// Can simulate success or failure based on [isThrowError].
 class TestService extends Service<String> {
-  TestService({this.throwError = false});
+  new({this.throwError = false});
 
   final bool throwError;
   bool isDisposed = false;

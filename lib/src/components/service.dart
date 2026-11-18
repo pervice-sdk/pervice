@@ -21,7 +21,7 @@ enum ServiceStatus {
 /// An abstract class that represents the ViewModel in the `MVVM` architecture pattern.
 /// Primarily responsible for data loading and state management.
 abstract class Service<T> extends ChangeNotifier {
-  Service({ServiceStatus initialStatus = .none}) : _rawStatus = initialStatus;
+  new({ServiceStatus initialStatus = .none}) : _rawStatus = initialStatus;
 
   /// Stores the current service status.
   late ServiceStatus _rawStatus;

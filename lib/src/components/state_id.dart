@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 ///
 /// A null [element] identifies state shared across a `StateScope`.
 class StateId extends Equatable {
-  const StateId({
+  const new({
     required this.element,
     required this.key,
     required this.type,

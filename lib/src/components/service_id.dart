@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 /// Uniquely identifies a service by its [type] and optional [key].
 class ServiceId extends Equatable {
-  const ServiceId({
+  const new({
     required this.key,
     required this.type,
   });

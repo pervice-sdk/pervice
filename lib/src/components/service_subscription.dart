@@ -6,7 +6,7 @@ import 'package:pervice/pervice.dart';
 /// This class acts as a bridge that registers event listeners, tracks active
 /// [watchers] and [readers], and disposes of the service once it has no dependents.
 class ServiceSubscription {
-  ServiceSubscription({
+  new({
     required this.service,
     required this.listener,
   });
